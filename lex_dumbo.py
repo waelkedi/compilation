@@ -28,7 +28,7 @@ states = (('code', 'exclusive'), )
 
 t_code_ASSIGN = ':='
 
-literals = "()\.;,\'"
+literals = ";()\.,\'"
 
 def t_BEGIN(t):
     '{{'
@@ -46,12 +46,14 @@ def t_code_ID(t):
     return t
 
 def t_code_STRING(t):
-    r'\'[a-zA-Z0-9;&<>"-./\\s\p:,= ]+\''
-    t.value = t.value
+    r'\'[a-zA-Z0-9;&<>"_-]*\''
+
+    
+    t.value = t.value[1:-1]
     return t
 
 def t_TXT(t):
-    r'[a-zA-Z0-9;&<>"-./\\n\p:,=]+'
+    r'[a-zA-Z0-9;&<>"-./\\n\p:,= ]+'
     t.value = t.value
     return t
 
@@ -64,7 +66,7 @@ def t_code_newline(t):
     t.lexer.lineno += len(t.value)
 
 
-t_ignore = ' \t'
+t_ignore = '\t'
 t_code_ignore= ' \t'
 
 
