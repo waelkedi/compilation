@@ -1,2 +1,7 @@
-<html> {{ for i in l do print i; endfor; }} </html> {{ a := 'tets'; print a; }}
-
+<html>
+	<html><title>{{ print nom . ' ' . prenom;}}</title></head>
+	<body>
+	<h1>{{print nom . ' ' . prenom;}}</h1>
+	Cours : {{ for c in cours do print c ', '; endfor;}}
+	</body>
+</html>

@@ -20,7 +20,6 @@ def p_prog_text(p):
 
     '''prog : TXT'''
     p[0] = ('TXT',p[1])
-    print '1'
     
 def p_prog_dumbo_block(p):
 
@@ -37,7 +36,6 @@ def p_prog_dumbo_block_prog(p):
 
     '''prog : dumbo_block prog'''
     p[0] = ('PROG',p[1],p[2])
-    print 'test' 
 
 def p_dumbo_block(p):
     
@@ -49,7 +47,6 @@ def p_expression_list(p):
     '''
     expression_list : expression ';'
     '''
-    print 'exp'
     p[0] = p[1]
     
     
@@ -63,7 +60,6 @@ def p_print(p):
     '''expression : PRINT string_expression
     	          | PRINT int_expression'''
     p[0] = ('PRINT', p[2])
-    print 'print'
 
 def p_string(p):
 
@@ -85,7 +81,6 @@ def p_id(p):
     
     '''string_expression : ID'''
     p[0] = ('ID',p[1])
-    print 'id'
 
 def p_string_list(p):
 
@@ -96,7 +91,6 @@ def p_string_interarior(p):
 
     '''string_list_interior : STRING ',' string_list_interior
                             | STRING'''
-    print p[1]
     if(len(p) == 2):
         p[0] = ('STRING_LIST',('STRING',p[1]),None)
     else:

@@ -1,1 +1,5 @@
-{{ l := ('a','b','c'); }}
+{{
+nom := 'Pijcke';
+prenom := 'Fabian';
+cours := ('Intelligence artificielle' , 'Projet Info', 'Simulation');
+}}

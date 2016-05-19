@@ -40,6 +40,8 @@ def interpret(t):
 		return ""
 	elif (head == 'ID'):
 		return interpret(env[t[1]])
+	elif (head == 'CAT'):
+		return interpret(t[1]) + interpret(t[2])
 	elif (head == 'FOR'):
 		acc = ""
 		if(t[2][0] == 'ID'):
