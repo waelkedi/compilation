@@ -1,3 +1,2 @@
-{{ l := ('a','b','c') ;}}
 <html> {{ for i in l do print i; endfor; }} </html> {{ a := 'tets'; print a; }}
 

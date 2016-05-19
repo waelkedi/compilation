@@ -12,7 +12,6 @@ class Node(object):
 
 env = {}
 
-
 precedence = (
     ('left' , '.'),
     )
@@ -61,7 +60,8 @@ def p_exp_list_exp_exp_list(p):
     
 def p_print(p):
 
-    '''expression : PRINT string_expression'''
+    '''expression : PRINT string_expression
+    	          | PRINT int_expression'''
     p[0] = ('PRINT', p[2])
     print 'print'
 
@@ -79,7 +79,7 @@ def p_string_string(p):
 def p_assing_string(p):
 
     '''expression : ID ASSIGN string_expression'''
-    p[0] = ('ASSING',p[1],p[3])
+    p[0] = ('ASSIGN',p[1],p[3])
     
 def p_id(p):
     
@@ -105,7 +105,7 @@ def p_string_interarior(p):
 def p_assing_list (p):
 
     '''expression : ID ASSIGN string_list'''
-    p[0] = ('ASSING',p[1],p[3])
+    p[0] = ('ASSIGN',p[1],p[3])
 
 def p_for_loop(p):
 
@@ -117,17 +117,56 @@ def p_for_loop_id(p):
     '''expression : FOR ID IN ID DO expression_list ENDFOR'''
     p[0] = ('FOR',p[2],('ID',p[4]),p[6])
 
+'''EXTEND GRAMMAR'''
 
+def p_int_expression(p):
+    '''int_expression : NBR'''
+    p[0] = ('NBR',p[1])
 
-    
+def p_assign_int(p):
+    '''expression : ID ASSIGN int_expression'''
+    p[0] = ('ASSIGN',p[1],p[3])
+
+def p_minus(p):
+    '''int_expression : int_expression '-' int_expression'''
+    p[0] = ('MINUS',p[1],p[3])
+def p_add(p):
+    '''int_expression : int_expression '+' int_expression'''
+    p[0] = ('PLUS',p[1],p[3])
+def p_time(p):
+    '''int_expression : int_expression '*' int_expression'''
+    p[0] = ('TIME',p[1],p[3])
+def p_divide(p):
+    '''int_expression : int_expression '/' int_expression'''
+    p[0] = ('DIVIDE',p[1],p[3])
+
+def p_gt(p):
+    '''bool_expression : NBR '>' NBR'''
+    p[0] = ('GT',('NBR',p[1]),('NBR',p[3]))
+def p_lt(p):
+    '''bool_expression : NBR '<' NBR'''
+    p[0] = ('LT',('NBR',p[1]),('NBR',p[3]))
+
+def p_or(p):
+    '''bool_expression : bool_expression OR bool_expression'''
+    p[0] = ('OR',p[1],p[3])
+def p_and(p):
+    '''bool_expression : bool_expression AND bool_expression'''
+    p[0] = ('AND',p[1],p[3])
+def p_bool(p):
+    '''bool_expression : TRUE
+    		       | FALSE'''
+    p[0] = ('BOOL',p[1])
+def p_if(p):
+    '''expression : IF bool_expression DO expression_list ENDIF'''
+    p[0] = ('IF',p[2],p[4])
 
 yacc.yacc(outputdir='generated')
 
 if __name__ == '__main__':
     import sys
     input = file(sys.argv[1]).read()
+    input = input + file(sys.argv[2]).read()
     result =  yacc.parse(input)
     print 'AST:'
-    print  result
     print interpret(result)
-    

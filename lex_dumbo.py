@@ -7,7 +7,13 @@ reserved = {
     'for' : 'FOR',
     'in' : 'IN',
     'do' : 'DO',
-    'endfor' : 'ENDFOR'
+    'endfor' : 'ENDFOR',
+    'true' : 'TRUE',
+    'false' : 'FALSE',
+    'if' : 'IF',
+    'and' : 'AND',
+    'or' : 'OR',
+    'endif' : 'ENDIF'
 }
 
 tokens = [
@@ -22,13 +28,15 @@ tokens = [
     'RIGHT_PAREN',
     'CONCAT',
     'COMMA',
+    'NBR',
+    'NEQ'
 ] + list(reserved.values())
 
 states = (('code', 'exclusive'), )
 
 t_code_ASSIGN = ':='
 
-literals = ";()\.,\'"
+literals = ";()\.,\'+-/*<>=!"
 
 def t_BEGIN(t):
     '{{'
@@ -41,7 +49,7 @@ def t_code_END(t):
     return t
 
 def t_code_ID(t):
-    r'[a-zA-Z_0-9]+'
+    r'[a-zA-Z][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
 
@@ -54,6 +62,16 @@ def t_code_STRING(t):
 
 def t_TXT(t):
     r'[a-zA-Z0-9;&<>"-./\\n\p:,= ]+'
+    t.value = t.value
+    return t
+
+def t_code_NBR(t):
+    r'0|[1-9][0-9]*'
+    t.value = int(t.value)
+    return t
+
+def t_code_NEQ(t):
+    r'!='
     t.value = t.value
     return t
 
