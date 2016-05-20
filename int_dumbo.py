@@ -49,8 +49,17 @@ def interpret(t):
 		else:
 			node = t[2]
 		while(node != None):
+			print "\n\n\n"
+			print "COUCOU1"
+			print "\n\n\n"
 			env[t[1]] = node[1]
+			print "\n\n\n"
+			print "COUCOU2"
+			print "\n\n\n"
 			acc += interpret(t[3])
+			print "\n\n\n"
+			print "COUCOU3"
+			print "\n\n\n"
 			node = node[2]
 		return acc 
 	elif (head == 'IF'):

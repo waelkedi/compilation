@@ -1,7 +1,7 @@
 <html>
-	<html><title>{{ print nom . ' ' . prenom;}}</title></head>
+	<html><title>{{print nom.' '.prenom;}}</title></head>
 	<body>
-	<h1>{{print nom . ' ' . prenom;}}</h1>
-	Cours : {{ for c in cours do print c ', '; endfor;}}
+	<h1>{{ print nom.' '.prenom ; }}</h1>
+	Cours : {{ for c in cours do print c.' '; endfor ; }}
 	</body>
 </html>

@@ -113,6 +113,9 @@ def p_for_loop_id(p):
 
 '''EXTEND GRAMMAR'''
 
+def p_int_expression_id(p):
+    '''int_expression : ID'''
+    p[0] = ('ID',p[1])
 def p_int_expression(p):
     '''int_expression : NBR'''
     p[0] = ('NBR',p[1])
@@ -159,8 +162,9 @@ yacc.yacc(outputdir='generated')
 
 if __name__ == '__main__':
     import sys
-    input = file(sys.argv[1]).read()
-    input = input + file(sys.argv[2]).read()
+    input = file(sys.argv[1]).read() + file(sys.argv[2]).read()
     result =  yacc.parse(input)
+    print "\n\n\n"
+    print input
     print 'AST:'
     print interpret(result)

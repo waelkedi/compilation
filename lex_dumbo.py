@@ -54,9 +54,7 @@ def t_code_ID(t):
     return t
 
 def t_code_STRING(t):
-    r'\'[a-zA-Z0-9;&<>"_-]*\''
-
-    
+    r'\'[a-z|A-Z|0-9|;|&|<|>|"|_|\s|\-|\.|\\|\/|\n|\p|:|,|=]+\''
     t.value = t.value[1:-1]
     return t
 

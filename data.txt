@@ -1,5 +1,1 @@
-{{
-nom := 'Pijcke';
-prenom := 'Fabian';
-cours := ('Intelligence artificielle' , 'Projet Info', 'Simulation');
-}}
+{{nom:='Pijcke';prenom:='Fabian';list := ('C1','C2','C3');}}
