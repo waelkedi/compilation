@@ -1,6 +1,7 @@
 env = {}
 
 def interpret(t):
+	
 	print t
 	head = t[0]
 	if (head == 'PROG'):
@@ -36,9 +37,14 @@ def interpret(t):
 	elif (head == 'EXP_LIST'):
 		return interpret(t[1]) + interpret(t[2])
 	elif (head == 'ASSIGN'):
-		env[t[1]] = t[2]
+		print "ASSIGN " + str(t)
+		if (isinstance(interpret(t[2]),int)):		
+			env[t[1]] = ('NBR',interpret(t[2]))
+		else:
+			env[t[1]] = interpret(t[2])			
 		return ""
 	elif (head == 'ID'):
+		print env
 		return interpret(env[t[1]])
 	elif (head == 'CAT'):
 		return interpret(t[1]) + interpret(t[2])
@@ -49,18 +55,13 @@ def interpret(t):
 		else:
 			node = t[2]
 		while(node != None):
-			print "\n\n\n"
-			print "COUCOU1"
-			print "\n\n\n"
+			print "\n\n"
 			env[t[1]] = node[1]
-			print "\n\n\n"
-			print "COUCOU2"
-			print "\n\n\n"
+			print "Env: "+ str(env) + " node = " + str(node[1]) + "\n"
+			print t[3]
 			acc += interpret(t[3])
-			print "\n\n\n"
-			print "COUCOU3"
-			print "\n\n\n"
 			node = node[2]
+		print "end"
 		return acc 
 	elif (head == 'IF'):
 		if(interpret(t[1])):
