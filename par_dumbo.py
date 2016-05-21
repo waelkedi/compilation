@@ -64,7 +64,7 @@ def p_print(p):
 def p_string(p):
 
     '''string_expression : STRING'''
-    p[0] = ('STRING',p[1])
+    p[0] = p[1]
 
 def p_string_string(p):
 
@@ -92,10 +92,12 @@ def p_string_interarior(p):
     '''string_list_interior : STRING ',' string_list_interior
                             | STRING'''
     if(len(p) == 2):
-        p[0] = ('STRING_LIST',('STRING',p[1]),None)
+	print "fdsq"+ str([p[1]])
+        p[0] = [p[1]]
     else:
-        p[0] = ('STRING_LIST',('STRING',p[1]),p[3])
-    
+	print p[3]
+        p[3].insert(0,p[1])
+    	p[0] = p[3]
 def p_assing_list (p):
 
     '''expression : ID ASSIGN string_list'''
@@ -118,7 +120,7 @@ def p_int_expression_id(p):
     p[0] = ('ID',p[1])
 def p_int_expression(p):
     '''int_expression : NBR'''
-    p[0] = ('NBR',p[1])
+    p[0] = int(p[1])
 
 def p_assign_int(p):
     '''expression : ID ASSIGN int_expression'''
@@ -150,10 +152,13 @@ def p_or(p):
 def p_and(p):
     '''bool_expression : bool_expression AND bool_expression'''
     p[0] = ('AND',p[1],p[3])
-def p_bool(p):
-    '''bool_expression : TRUE
-    		       | FALSE'''
-    p[0] = ('BOOL',p[1])
+def p_bool_t(p):
+    '''bool_expression : TRUE'''
+    p[0] = True
+def p_bool_f(p):
+    '''bool_expression : FALSE''' 	
+    p[0] = False
+
 def p_if(p):
     '''expression : IF bool_expression DO expression_list ENDIF'''
     p[0] = ('IF',p[2],p[4])
@@ -167,4 +172,6 @@ if __name__ == '__main__':
     print "\n\n\n"
     print input
     print 'AST:'
+    print result
+    print "\n\n\n"
     print interpret(result)

@@ -3,12 +3,15 @@ env = {}
 def interpret(t):
 	
 	print t
+
+	if (not isinstance(t, tuple)):
+		return t
+	
 	head = t[0]
+
 	if (head == 'PROG'):
 		return  interpret(t[1]) + interpret(t[2])
 	elif (head == 'TXT'):
-		return t[1]
-	elif (head == 'NBR'):
 		return t[1]
 	elif (head == 'PLUS'):
 		return int(interpret(t[1])) + int(interpret(t[2]))
@@ -18,8 +21,6 @@ def interpret(t):
 		return int(interpret(t[1])) * int(interpret(t[2]))
 	elif (head == 'DIVIDE'):
 		return int(interpret(t[1])) / int(interpret(t[2]))
-	elif (head == 'BOOL'):
-		return t[1]
 	elif (head == 'AND'):
 		return interpret(t[1]) and interpret(t[2])
 	elif (head == 'OR'):
@@ -30,38 +31,29 @@ def interpret(t):
 		return interpret(t[1]) < interpret(t[2])
 	elif (head == 'PRINT'):
 		return str(interpret(t[1]))
-	elif (head == 'STRING'):
-		return t[1]
-	elif (head == 'STRING_LIST'):
-		return t
 	elif (head == 'EXP_LIST'):
 		return interpret(t[1]) + interpret(t[2])
 	elif (head == 'ASSIGN'):
-		print "ASSIGN " + str(t)
-		if (isinstance(interpret(t[2]),int)):		
-			env[t[1]] = ('NBR',interpret(t[2]))
-		else:
-			env[t[1]] = interpret(t[2])			
+		env[t[1]] = interpret(t[2])			
 		return ""
 	elif (head == 'ID'):
 		print env
-		return interpret(env[t[1]])
+		return env[t[1]]
 	elif (head == 'CAT'):
+		print interpret(t[1]) + interpret(t[2])
 		return interpret(t[1]) + interpret(t[2])
 	elif (head == 'FOR'):
 		acc = ""
-		if(t[2][0] == 'ID'):
-			node = interpret(t[2])
+		print t[2]		
+		if (t[2][0] == 'ID'):
+			l = interpret(t[2])
 		else:
-			node = t[2]
-		while(node != None):
-			print "\n\n"
-			env[t[1]] = node[1]
-			print "Env: "+ str(env) + " node = " + str(node[1]) + "\n"
-			print t[3]
+			l = t[2]
+		
+		for node in l:
+			print node
+			env[t[1]] = node
 			acc += interpret(t[3])
-			node = node[2]
-		print "end"
 		return acc 
 	elif (head == 'IF'):
 		if(interpret(t[1])):
@@ -69,5 +61,5 @@ def interpret(t):
 		else:
 			return ""
 	else:
-		return ""
+		return t
 
