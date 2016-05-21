@@ -174,4 +174,4 @@ if __name__ == '__main__':
     print 'AST:'
     print result
     print "\n\n\n"
-    print interpret(result)
+    print interpret(result,{})
