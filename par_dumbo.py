@@ -174,4 +174,4 @@ if __name__ == '__main__':
     import sys
     input = file(sys.argv[1]).read() + file(sys.argv[2]).read()
     result =  yacc.parse(input)
-    print interpret(result,{})
+    print interpret(result)

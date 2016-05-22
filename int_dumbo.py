@@ -1,6 +1,8 @@
 import copy
 
-def interpret(t,env):
+env = {}
+
+def interpret(t):
 
 	if (not isinstance(t, tuple)):
 		return t
@@ -8,51 +10,56 @@ def interpret(t,env):
 	head = t[0]
 
 	if (head == 'PROG'):
-		return  interpret(t[1],env) + interpret(t[2],env)
+		return  interpret(t[1]) + interpret(t[2])
 	elif (head == 'TXT'):
 		return t[1]
 	elif (head == 'PLUS'):
-		return int(interpret(t[1],env)) + int(interpret(t[2],env))
+		return int(interpret(t[1])) + int(interpret(t[2]))
 	elif (head == 'MINUS'):
-		return int(interpret(t[1],env)) - int(interpret(t[2],env))
+		return int(interpret(t[1])) - int(interpret(t[2]))
 	elif (head == 'TIME'):
-		return int(interpret(t[1],env)) * int(interpret(t[2],env))
+		return int(interpret(t[1])) * int(interpret(t[2]))
 	elif (head == 'DIVIDE'):
-		return int(interpret(t[1],env)) / int(interpret(t[2],env))
+		return int(interpret(t[1])) / int(interpret(t[2]))
 	elif (head == 'AND'):
-		return interpret(t[1],env) and interpret(t[2],env)
+		return interpret(t[1]) and interpret(t[2])
 	elif (head == 'OR'):
-		return interpret(t[1],env) or interpret(t[2],env)
+		return interpret(t[1]) or interpret(t[2])
 	elif (head == 'GT'):
-		return interpret(t[1],env) > interpret(t[2],env)
+		return interpret(t[1]) > interpret(t[2])
 	elif (head == 'LT'):
-		return interpret(t[1],env) < interpret(t[2],env)
+		return interpret(t[1]) < interpret(t[2])
 	elif (head == 'PRINT'):
-		return str(interpret(t[1],env))
+		return str(interpret(t[1]))
 	elif (head == 'EXP_LIST'):
-		return interpret(t[1],env) + interpret(t[2],env)
+		return interpret(t[1]) + interpret(t[2])
 	elif (head == 'ASSIGN'):
-		env[t[1]] = interpret(t[2],env)			
+		env[t[1]] = interpret(t[2])			
 		return ""
 	elif (head == 'ID'):
 		return env[t[1]]
 	elif (head == 'CAT'):
-		return interpret(t[1],env) + interpret(t[2],env)
+		return interpret(t[1]) + interpret(t[2])
 	elif (head == 'NOT'):
 		return not(interpret(t[1]))
 	elif( head=='NEQ'):
 		return interpret(t[1]) != interpret(t[2])
 	elif (head == 'FOR'):
-		c_env = copy.deepcopy(env)		
+		print env 
+		print t
 		acc = ""
-		l = t[2]
+		if env[t[1]] != None:
+			copy_var = env[t[1]]
+		l = interpret(t[2])
+		print l
 		for node in l:
-			c_env[t[1]] = node
-			acc += interpret(t[3], c_env)
+			env[t[1]] = node
+			acc += interpret(t[3])
+		env[t[1]] = copy_var
 		return acc 
 	elif (head == 'IF'):
-		if(interpret(t[1],env)):
-			return interpret(t[2],env)
+		if(interpret(t[1])):
+			return interpret(t[2])
 		else:
 			return ""
 	else:
