@@ -45,13 +45,10 @@ def interpret(t):
 	elif( head=='NEQ'):
 		return interpret(t[1]) != interpret(t[2])
 	elif (head == 'FOR'):
-		print env 
-		print t
 		acc = ""
 		if env[t[1]] != None:
 			copy_var = env[t[1]]
 		l = interpret(t[2])
-		print l
 		for node in l:
 			env[t[1]] = node
 			acc += interpret(t[3])
