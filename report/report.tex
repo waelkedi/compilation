@@ -1,4 +1,4 @@
-\documentclass[report,10pt,a4paper]{memoir}
+\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
@@ -6,24 +6,34 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{listings}
+\usepackage{titling}
+\usepackage{lstautogobble}
 \author{\textsc{Waelkens} Dimitri, \textsc{Lempereur} Martin}
-\title{Devoir de compilation : Rapport}
-\date{\today}
-\renewcommand{\maketitlehookd}{%
+\pretitle{%
   \begin{center}
-    Département d'Informatique \\
-        Université de Mons \\[2ex]\includegraphics[height=4ex]{UMONS}\hspace{2em}
-         \raisebox{-1ex}{\includegraphics[height=6ex]{UMONS_FS}}
-  \end{center}}
+  Département d'Informatique \\
+        Université de Mons \\[2ex]
+  \includegraphics[height=4ex]{UMONS}\hspace{2em}
+         \raisebox{-1ex}{\includegraphics[height=6ex]{UMONS_FS}}\\[\bigskipamount]
+ 
+    
+}
+\posttitle{\end{center}}
+
 \begin{document}
+\title{\LARGE{Devoir de compilation : Rapport}}
+\date{\today}
 \maketitle
 \newpage
+\tableofcontents
+\newpage
 
-\section*{Consigne}
+\section{Consigne}
 Il nous était demandé dans le cadre du cours de compilation de réaliser un moteur de templating simplifié.
 Ce moteur doit recevoir un fichier de données ainsi que un ficher de template qui sera utilisé pour venir y insérer ces données.
 Ce genre de moteur de templating permet à partir d'un même modèle d'afficher plusieurs fichiers avec des données différentes sans devoir pour autant tout réécrire.
-\section*{Grammaire}
+\section{Grammaire}
 Nous avons d'abord implémenter la grammaire décrite dans les consignes.
 Ensuite nous avons insérer plusieurs règles pour gérer les opérations sur entier ainsi que certaines expressions booléennes.
 La grammaire résultante est décrite ci-dessous :\\
@@ -77,11 +87,11 @@ Pour la règle 18, on crée un tuple qui contient
 \end{verbatim}
 où \\p1 : variable qui va évoluer,\\ p2 : variable sur laquelle on va itérer,\\ p3 : instructions à réaliser. 
 
-\section*{For, If et explications}
-\subsection*{Explications}
+\section{For, If et explications}
+\subsection{Explications}
 Nous avons créer une variable global dans notre programme qui contient des informations sur l'environnement des variables.
 Cet environnement peut être enrichi en connaissance comme lorsque un ID est assigné alors on ajoute l'ID et sa valeur à la variable globale, ou bien on peut retirer des information lorsqu'une variable est initialisé dans une boucle et ne peut plus être appelée ensuite.
-\subsection*{For}
+\subsection{For}
 Comme décrit dans la section d'avant l'interpréteur va recevoir un tuple contenant plusieurs éléments d'information sur
 la boucle For.
 
@@ -89,10 +99,22 @@ L'interpréteur va d'abord aller chercher le contenu de la variable cible.
 
 Ensuite pour chaque élément $e$ de cette variable, une variable accessible par les instructions de la boucle va être assignée avec la valeur de $e$.
 Une fois la valeur assignée et ajouter a la variable global environnent, on va exécuter le corps de la boucle, ainsi de suite jusqu'à ce que chaque élément $e$ sont parcouru.
-\subsection*{If}
+\begin{lstlisting}
+if (head == 'FOR'):
+	acc = ""
+	if env[t[1]] != None:
+		copy_var = env[t[1]]
+	l = interpret(t[2])
+	for node in l:
+		env[t[1]] = node
+		acc += interpret(t[3])
+	env[t[1]] = copy_var
+	return acc
+\end{lstlisting}
+\subsection{If}
 Le If est réalisé comme toutes les autres opérations à l'aide de la description contenue dans un tuple.
 L'interpréteur va évaluer la condition si celle-ci est vérifié va interpréter l'intérieur du if sinon va retourner une chaine vide.
-\section*{Problèmes rencontrés}
+\section{Problèmes rencontrés}
 Nous avons essayer de construire petit a petit notre programme en regardant à ce que chaque partie implémentée soit fonctionnelle avant de passer à la suite.
 Mais dès lors que l'on veut changer la grammaire, on se rend compte que certaines parties du lexeur par exemple ont été mal pensées mais on ne peut pas forcement déterminer de quel partie du compilateur le problème provient.
 Dans notre projet on a par exemple eu une regex qui était légèrement mal construite mais fonctionnait correctement avec notre lexer, ainsi que notre grammaire, lorsque l'on a voulu faire évoluer notre grammaire des erreurs sont apparues mais ne provenait pas de la nouvelle description de la grammaire.
