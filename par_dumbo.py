@@ -92,10 +92,8 @@ def p_string_interarior(p):
     '''string_list_interior : STRING ',' string_list_interior
                             | STRING'''
     if(len(p) == 2):
-	print "fdsq"+ str([p[1]])
         p[0] = [p[1]]
     else:
-	print p[3]
         p[3].insert(0,p[1])
     	p[0] = p[3]
 def p_assing_list (p):
@@ -140,11 +138,18 @@ def p_divide(p):
     p[0] = ('DIVIDE',p[1],p[3])
 
 def p_gt(p):
-    '''bool_expression : NBR '>' NBR'''
-    p[0] = ('GT',('NBR',p[1]),('NBR',p[3]))
+    '''bool_expression : int_expression '>' int_expression'''
+    p[0] = ('GT',p[1],p[3])
 def p_lt(p):
-    '''bool_expression : NBR '<' NBR'''
-    p[0] = ('LT',('NBR',p[1]),('NBR',p[3]))
+    '''bool_expression : int_expression '<' int_expression'''
+    p[0] = ('LT',p[1],p[3])
+
+def p_not(p):
+    '''bool_expression : '!' bool_expression'''
+    p[0] = ('NOT',p[2])
+def p_neq(p):
+    '''bool_expression : int_expression NEQ int_expression'''
+    p[0] = ('NEQ',p[1],p[3])
 
 def p_or(p):
     '''bool_expression : bool_expression OR bool_expression'''
@@ -169,9 +174,4 @@ if __name__ == '__main__':
     import sys
     input = file(sys.argv[1]).read() + file(sys.argv[2]).read()
     result =  yacc.parse(input)
-    print "\n\n\n"
-    print input
-    print 'AST:'
-    print result
-    print "\n\n\n"
     print interpret(result)

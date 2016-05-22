@@ -1,9 +1,6 @@
 env = {}
 
 def interpret(t):
-	
-	print t
-
 	if (not isinstance(t, tuple)):
 		return t
 	
@@ -37,21 +34,21 @@ def interpret(t):
 		env[t[1]] = interpret(t[2])			
 		return ""
 	elif (head == 'ID'):
-		print env
 		return env[t[1]]
 	elif (head == 'CAT'):
-		print interpret(t[1]) + interpret(t[2])
 		return interpret(t[1]) + interpret(t[2])
+	elif (head == 'NOT'):
+		return not(interpret(t[1]))
+	elif( head=='NEQ'):
+		return interpret(t[1]) != interpret(t[2])
 	elif (head == 'FOR'):
 		acc = ""
-		print t[2]		
 		if (t[2][0] == 'ID'):
 			l = interpret(t[2])
 		else:
 			l = t[2]
 		
 		for node in l:
-			print node
 			env[t[1]] = node
 			acc += interpret(t[3])
 		return acc 

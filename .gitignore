@@ -1,1 +1,5 @@
 *.pyc
+report/*.aux
+report/*.log
+report/*.gz
+generated

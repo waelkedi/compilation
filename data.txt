@@ -1,1 +1,1 @@
-{{nom:='Pijcke';prenom:='Fabian';list := ('C1','C2','C3');}}
+{{nom:='Pijcke';prenom:='Fabian';list := ('C1','C2','C3');der := 3;}}
