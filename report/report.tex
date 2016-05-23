@@ -31,11 +31,11 @@
 
 \section{Consigne}
 Il nous était demandé dans le cadre du cours de compilation de réaliser un moteur de templating simplifié.
-Ce moteur doit recevoir un fichier de données ainsi que un ficher de template qui sera utilisé pour venir y insérer ces données.
+Ce moteur doit recevoir un fichier de données ainsi qu'un ficher de template qui sera utilisé pour venir y insérer ces données.
 Ce genre de moteur de templating permet à partir d'un même modèle d'afficher plusieurs fichiers avec des données différentes sans devoir pour autant tout réécrire.
 \section{Grammaire}
-Nous avons d'abord implémenter la grammaire décrite dans les consignes.
-Ensuite nous avons insérer plusieurs règles pour gérer les opérations sur entier ainsi que certaines expressions booléennes.
+Nous avons d'abord implémenté la grammaire décrite dans les consignes.
+Ensuite, nous avons inséré plusieurs règles pour gérer les opérations sur les entiers ainsi que certaines expressions booléennes.
 La grammaire résultante est décrite ci-dessous :\\
 
 \begin{flushleft}
@@ -77,7 +77,7 @@ Rule 34 : $bool\_expression \rightarrow FALSE$\\
 Rule 35 : $expression \rightarrow IF\ bool\_expression\ DO\ expression\_list\ ENDIF$\\
 \end{flushleft}
 
-Dans notre parser qui reprend cette grammaire nous avons à chaque règle trouvée, créer un tuple qui décrit l'opération en question, ce tuple sera utilisé par notre interpréteur. \\
+Dans notre parser qui reprend cette grammaire nous avons, à chaque règle trouvée, créé un tuple qui décrit l'opération en question. Ce tuple sera utilisé par notre interpréteur. \\
 
 
 \textbf{Exemple :}\\
@@ -89,16 +89,16 @@ où \\p1 : variable qui va évoluer,\\ p2 : variable sur laquelle on va itérer,
 
 \section{For, If et explications}
 \subsection{Explications}
-Nous avons créer une variable global dans notre programme qui contient des informations sur l'environnement des variables.
-Cet environnement peut être enrichi en connaissance comme lorsque un ID est assigné alors on ajoute l'ID et sa valeur à la variable globale, ou bien on peut retirer des information lorsqu'une variable est initialisé dans une boucle et ne peut plus être appelée ensuite.
+Nous avons créé une variable globale dans notre programme qui contient des informations sur l'environnement des variables.
+Cet environnement peut être enrichi en connaissance comme lorsque un ID est assigné. Alors on ajoute l'ID et sa valeur à la variable globale, ou on peut également retirer des informations lorsqu'une variable est initialisée dans une boucle et ne peut plus être appelée ensuite.
 \subsection{For}
-Comme décrit dans la section d'avant l'interpréteur va recevoir un tuple contenant plusieurs éléments d'information sur
+Comme décrit dans la section précédente, l'interpréteur va recevoir un tuple contenant plusieurs éléments d'information sur
 la boucle For.
 
 L'interpréteur va d'abord aller chercher le contenu de la variable cible.
 
-Ensuite pour chaque élément $e$ de cette variable, une variable accessible par les instructions de la boucle va être assignée avec la valeur de $e$.
-Une fois la valeur assignée et ajouter a la variable global environnent, on va exécuter le corps de la boucle, ainsi de suite jusqu'à ce que chaque élément $e$ sont parcouru.
+Ensuite pour chaque élément $node$ de cette variable, une variable accessible par les instructions de la boucle va être assignée avec la valeur de $node$.
+Une fois la valeur assignée et ajoutée à la variable globale d'environnement, on va exécuter le corps de la boucle, ainsi de suite jusqu'à ce que chaque élément $node$ soit parcouru.
 \begin{lstlisting}
 if (head == 'FOR'):
 	acc = ""
@@ -113,9 +113,22 @@ if (head == 'FOR'):
 \end{lstlisting}
 \subsection{If}
 Le If est réalisé comme toutes les autres opérations à l'aide de la description contenue dans un tuple.
-L'interpréteur va évaluer la condition si celle-ci est vérifié va interpréter l'intérieur du if sinon va retourner une chaine vide.
+L'interpréteur va évaluer la condition si celle-ci est vérifié va interpréter l'intérieur du if sinon va retourner une chaine vide car l'entièreté du programme est une concaténation de chaines de caractères.
+\begin{lstlisting}
+
+if (head == 'IF'):
+	if(interpret(t[1])):
+		return interpret(t[2])
+	else:
+		return ""
+\end{lstlisting}
+
+
 \section{Problèmes rencontrés}
-Nous avons essayer de construire petit a petit notre programme en regardant à ce que chaque partie implémentée soit fonctionnelle avant de passer à la suite.
-Mais dès lors que l'on veut changer la grammaire, on se rend compte que certaines parties du lexeur par exemple ont été mal pensées mais on ne peut pas forcement déterminer de quel partie du compilateur le problème provient.
-Dans notre projet on a par exemple eu une regex qui était légèrement mal construite mais fonctionnait correctement avec notre lexer, ainsi que notre grammaire, lorsque l'on a voulu faire évoluer notre grammaire des erreurs sont apparues mais ne provenait pas de la nouvelle description de la grammaire.
+\subsection{Modification de grammaire}
+Nous avons essayer de construire petit à petit notre programme en regardant à ce que chaque parties implémentées soient fonctionnelles avant de passer à la suite.
+Mais dès lors que l'on veut changer la grammaire, et qu'un bug apparait, on ne peut pas directement déterminer de quelle partie du compilateur le problème provient.
+Dans notre projet on a par exemple eu une regex qui était légèrement mal construite mais qui fonctionnait correctement avec notre lexer et notre grammaire, lorsque l'on a voulu faire évoluer notre grammaire des erreurs sont apparues mais ne provenait pas de la nouvelle description de la grammaire.
+\subsection{Analyse du fichier de donnée}
+Le fichier de donnée n'est censé que contenir des assignations de variable aucune instruction d'écriture ne doit apparaitre. Sur cette hypothèse donc nous avons concaténer ce fichier au programme dumbo, pour que les valeurs des variables puissent être connues du programme. Nous savons bien qu'un autre moyen était réalisable en parsant tout d'abord ce fichier de donnée a part et en parsant ensuite le programme dumbo, seulement notre application n'a pas été pensée de cette façon dès le début.
 \end{document}

@@ -3,3 +3,4 @@ report/*.aux
 report/*.log
 report/*.gz
 generated
+report/*.toc
